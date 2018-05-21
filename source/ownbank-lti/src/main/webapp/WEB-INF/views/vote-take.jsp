@@ -4,7 +4,6 @@
 <html>
 <head>
 <title>OwnBank</title>
-<%@include file="library.jsp" %>
 <style>
 .image-option {
     border: 4px solid transparent;
@@ -33,12 +32,11 @@
 
 <div>
     <!-- Action bar -->
-    <jsp:include page="period-vote-nav.jsp"></jsp:include>
     <div class="jumbotron">
     <H3>
-    Chào mừng bạn kỳ hốt HỤI đợt 3 - <b>(Tháng 5/2018)</b> - Hãy mức <b>hoa hồng</b> bạn muốn tranh hốt HỤI.
+    Chào mừng bạn đến với kỳ hốt HỤI đợt 3 - <b>(Tháng 5/2018)</b> - Hãy chọn mức <b>hoa hồng</b> bạn muốn tranh hốt HỤI.
     <br/>
-    Số càng cao thì xác xuất hốt HỤI của bạn càng lớn.
+    Số càng cao thì xác suất hốt HỤI của bạn càng lớn.
     <br/>
     </H3>
     </div>
@@ -89,22 +87,15 @@
               dataType : 'json',
               data : $("#frm").serialize(),
               success : function(result) {
-                  result = JSON.parse(result);
-                  console.log("Result:" + result.status);
-
-                  if (result.status == "OK") {
-                      // Debug on console
-                      console.log("message=" + result.status);
-                      $('#status').html("<H3>Bạn đã đồng ý hốt hụi mức:<b>" + result.periodVote + "</b></H3>");
-                  } else {
-                      $('#status').html("<div class='alert alert-danger'>" +
-                  		    "Có lỗi kết nối với máy chủ. Hãy liên lạc với người quản trị ứng dụng!" + 
-                  		    "</div>");
-                	  console.log("message=" + result);
-                  }
+                  // Debug on console
+                  console.log("message=" + result.status);
+                  $('#status').html("<H3>Bạn đã bỏ phiếu với giá trị là <b>" + frmData.get("voteValue") + "%</b>. Hãy giữ bí mật số này cho đến lúc CHỦ HỤI công bố kết quả nhé!</H3>");
               },
-              error : function(e) {
-                  console.log("Error:" + e);
+              error : function(result) {
+                  $('#status').html("<div class='alert alert-danger'>" +
+                		    "Có lỗi kết nối với máy chủ. Hãy liên lạc với người quản trị ứng dụng!" + 
+                		    "</div>");
+              	  console.log("message=" + result);
               }
           });
      });

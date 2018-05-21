@@ -117,29 +117,60 @@ public class LtiController {
             // Prepare data for form
             map.put("litLaunchData", result);
             
-//            return "vote";
-            return "period-vote";
+            return "vote";
         }
     }
 
     @Lti
-    @RequestMapping(value = "/vote-actions", params = "clickedBtn=Vote", method = RequestMethod.POST)
+    @RequestMapping(value = "/vote", method = RequestMethod.GET)
+    public String goVote(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        return "vote";
+    }
+
+    @Lti
+    @RequestMapping(value = "/vote-actions", params = "clickedBtn=vote", method = RequestMethod.POST)
     public String homeVote(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
         return "vote";
     }
 
     @Lti
-    @RequestMapping(value = "/vote-actions", params = "clickedBtn=VoteHistory", method = RequestMethod.POST)
+    @RequestMapping(value = "/vote-actions", params = "clickedBtn=voteHistory", method = RequestMethod.POST)
     public String voteHistory(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
 
         return "vote-history";
     }
 
     @Lti
-    @RequestMapping(value = "/vote-actions", params = "clickedBtn=Report", method = RequestMethod.POST)
+    @RequestMapping(value = "/vote-actions", params = "clickedBtn=voteReport", method = RequestMethod.POST)
     public String admin(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
-        return "report";
+        return "vote-report";
     }
+    
+    @Lti
+    @RequestMapping(value = "/lucky-num", method = RequestMethod.GET)
+    public String getLuckyNum(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        return "lucky-num";
+    }
+
+    @Lti
+    @RequestMapping(value = "/lucky-num-actions", params = "clickedBtn=LuckyNum", method = RequestMethod.POST)
+    public String homeLuckyNum(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        return "lucky-num";
+    }
+
+    @Lti
+    @RequestMapping(value = "/lucky-num-actions", params = "clickedBtn=LuckyNumHistory", method = RequestMethod.POST)
+    public String goLuckyNumHistory(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+
+        return "lucky-num-history";
+    }
+
+    @Lti
+    @RequestMapping(value = "/lucky-num-actions", params = "clickedBtn=LuckyNumReport", method = RequestMethod.POST)
+    public String goLuckyNumReport(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        return "lucky-num-report";
+    }
+
 
     /**
      * Save some information from request into the session.

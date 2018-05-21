@@ -1,7 +1,9 @@
 package mks.ownbank.lti.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +88,10 @@ public class AjaxController {
         
         periodVoteDao.save(periodVote);
         
-        return "{status: 'OK'}";
+        Map<String, String> resultStatus = new HashMap<>();
+        resultStatus.put("status", "OK");
+        
+        return new Gson().toJson(resultStatus);
     }
 
     
@@ -118,12 +123,28 @@ public class AjaxController {
         
         voteDao.save(vote);
         
-        return "{status: 'OK'}";
+        Map<String, String> resultStatus = new HashMap<>();
+        resultStatus.put("status", "OK");
+        
+        return new Gson().toJson(resultStatus);
     }
 
     @Lti
     @RequestMapping(value = "/load-history-votes", method = RequestMethod.GET)
     public String loadHistoryVotes(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        String userId = (String) map.get("userid");
+        
+        LOG.info("loadHistoryVotes...userId=" + userId);
+        List<PeriodVote> listVotes = periodVoteDao.findVoteByteUserId(userId);
+        
+        VoteDataModel dataModel = new VoteDataModel(listVotes);
+
+        return new Gson().toJson(dataModel);
+    }
+
+    @Lti
+    @RequestMapping(value = "/load-history-lucky-num", method = RequestMethod.GET)
+    public String loadHistoryLuckyNum(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
         String userId = (String) map.get("userid");
         
         LOG.info("loadHistoryVotes...userId=" + userId);
@@ -133,7 +154,7 @@ public class AjaxController {
 
         return new Gson().toJson(dataModel);
     }
-
+    
     @Lti
     @RequestMapping(value = "/load-all-history-votes", method = RequestMethod.GET)
     public String loadAllHistoryVotes(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {

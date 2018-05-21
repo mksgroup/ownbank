@@ -8,15 +8,23 @@
 </head>
 <body>
 <div>
-    <%@include file="vote-nav.jsp"%>
-    <H2>Vote history</H2>
+    <!-- Menu bar -->
+    <div>
+        <ul class="nav nav-tabs">
+          <li role="presentation"><a href="vote">Hốt hụi</a></li>
+          <li role="presentation" class="active"><a href="lucky-num">Lấy số may mắn</a></li>
+        </ul>
+    </div>
+    <%@include file="_lucky-number-nav.jsp"%>
+    <H2>Báo cáo lịch sử lấy số măn mắn của tất cả mọi người.</H2>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-striped" id="historyTable">
                     <thead>
                         <tr>
-                            <th width="20%">Date</th>
+                            <th width="30%">Date</th>
+                            <th width="20%">Username</th>
                             <th width="20%">Lucky number</th>
                         </tr>
                     </thead>
@@ -28,9 +36,10 @@
 <SCRIPT type="text/javascript">
     $(document).ready( function () {
         $('#historyTable').DataTable({
-        	"ajax": 'load-history-votes',
+        	"ajax": 'load-all-history-votes',
             "columns" : [
                 {"data" : "voted"},
+                {"data" : "username"},
                 {"data" : "luckyNum"}
              ]
         });
