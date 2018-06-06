@@ -43,8 +43,7 @@
     
              <form id="frm" action="savePeriodVote" method="POST">
                 <div class="row">
-                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>
-                    <% for (int i = 1; i <= 10; i ++ ) { %>
+                    <% for (int i = 0; i <= 10; i ++ ) { %>
                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
                         <H1>
                         <label>
