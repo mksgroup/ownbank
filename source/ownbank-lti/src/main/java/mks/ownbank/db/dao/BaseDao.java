@@ -29,8 +29,13 @@ import org.hibernate.SessionFactory;
  */
 public abstract class BaseDao {
     private final static Logger LOG = Logger.getLogger(BaseDao.class.getName());
-    SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
 
+    public BaseDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        
+    }
+    
     protected Session getCurrentSession() {
         try {
             return sessionFactory.getCurrentSession();

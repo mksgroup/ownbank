@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import mks.ownbank.db.dao.VoteDao;
+import mks.ownbank.db.dao.LuckyNumDao;
 import mks.ownbank.db.entiy.LogLtiLauch;
 import mks.ownbank.lti.JsonReader;
 import mks.ownbank.lti.config.LtiProviderConfig;
@@ -63,7 +63,7 @@ public class LtiController {
     private final static Logger LOG = Logger.getLogger(LtiController.class.getName());
 
     @Autowired
-    VoteDao voteDao;
+    LuckyNumDao luckyNumDao;
     
     private class ToolConsumerInfo {
         public String profileUrl;
@@ -142,7 +142,7 @@ public class LtiController {
 
     @Lti
     @RequestMapping(value = "/vote-actions", params = "clickedBtn=voteReport", method = RequestMethod.POST)
-    public String admin(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+    public String voteReport(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
         return "vote-report";
     }
     

@@ -22,21 +22,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Parameter;
 
 /**
  * @author ThachLN
  *
  */
-public class Vote implements Serializable {
+public class LuckyNum implements Serializable {
     /** Auto increment key. */
     private Integer id;
 
@@ -52,8 +45,8 @@ public class Vote implements Serializable {
     private String givenname;
     private String familyname;
     
-    /** Date of vote */
-    private Date voted;
+    /** Date of take luky numer */
+    private Date got;
     
     /** Randomized number */
     private Integer luckyNum;
@@ -173,19 +166,19 @@ public class Vote implements Serializable {
     }
 
     /**
-    * Get value of voted.
-    * @return the voted
+    * Get value of got.
+    * @return the got
     */
-    public Date getVoted() {
-        return voted;
+    public Date getGot() {
+        return got;
     }
 
     /**
-     * Set the value for voted.
-     * @param voted the voted to set
+     * Set the value for got.
+     * @param got the got to set
      */
-    public void setVoted(Date voted) {
-        this.voted = voted;
+    public void setGot(Date got) {
+        this.got = got;
     }
 
     /**

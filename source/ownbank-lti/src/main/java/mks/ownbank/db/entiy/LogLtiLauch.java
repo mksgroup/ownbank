@@ -42,6 +42,8 @@ public class LogLtiLauch implements Serializable {
     private String remoteHost;
     
     private Integer voteId;
+    private Integer luckyNumId;
+
     public LogLtiLauch() {
         
     }
@@ -217,6 +219,22 @@ public class LogLtiLauch implements Serializable {
      */
     public void setVoteId(Integer voteId) {
         this.voteId = voteId;
+    }
+
+    /**
+    * Get value of luckyNumId.
+    * @return the luckyNumId
+    */
+    public Integer getLuckyNumId() {
+        return luckyNumId;
+    }
+
+    /**
+     * Set the value for luckyNumId.
+     * @param luckyNumId the luckyNumId to set
+     */
+    public void setLuckyNumId(Integer luckyNumId) {
+        this.luckyNumId = luckyNumId;
     }
 
 }

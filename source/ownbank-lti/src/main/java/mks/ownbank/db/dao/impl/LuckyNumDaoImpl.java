@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package mks.ownbank.db.dao;
+package mks.ownbank.db.dao.impl;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -30,43 +30,44 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import mks.ownbank.db.entiy.PeriodVote;
+import mks.ownbank.db.dao.BaseDao;
+import mks.ownbank.db.dao.LuckyNumDao;
+import mks.ownbank.db.entiy.LuckyNum;
 
 /**
  * @author ThachLN
  */
 @Repository
-public class PeriodVoteDaoImpl extends BaseDao implements PeriodVoteDao {
-    private final static Logger LOG = Logger.getLogger(PeriodVoteDaoImpl.class.getName());
+public class LuckyNumDaoImpl extends BaseDao implements LuckyNumDao {
+    private final static Logger LOG = Logger.getLogger(LuckyNumDaoImpl.class.getName());
 
-    public PeriodVoteDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        
+    public LuckyNumDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     /**
      * [Explain the description for this method here].
-     * @param periodVote
-     * @see mks.ownbank.db.dao.VoteDao#save(mks.ownbank.db.entiy.Vote)
+     * @param vote
+     * @see mks.ownbank.db.dao.LuckyNumDao#save(mks.ownbank.db.entiy.Vote)
      */
     @Override
     @Transactional
-    public void save(PeriodVote periodVote) {
+    public void save(LuckyNum vote) {
         Session session = sessionFactory.openSession();
 
         try {
             session.beginTransaction();
             
             // Save the vote information
-            session.save(periodVote);
+            session.save(vote);
             
             // Save the client information
-            periodVote.getLtiLaunch().setVoteId(periodVote.getId());
-            session.save(periodVote.getLtiLaunch());
+            vote.getLtiLaunch().setVoteId(vote.getId());
+            session.save(vote.getLtiLaunch());
 
             session.getTransaction().commit();
         } catch (Exception ex) {
-            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", periodVote), ex);
+            LOG.log(Level.SEVERE, String.format("Could not save the lucky number [%s]", vote), ex);
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -74,39 +75,42 @@ public class PeriodVoteDaoImpl extends BaseDao implements PeriodVoteDao {
     }
     
     @Override
-    public void saveOrUpdate(PeriodVote periodVote) {
+    public void saveOrUpdate(LuckyNum vote) {
         Session session = getCurrentSession();
 
         try {
             // Save the vote information
-            session.save(periodVote);
+            session.save(vote);
         } catch (Exception ex) {
-            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", periodVote), ex);
+            LOG.log(Level.SEVERE, String.format("Could not save the lucky number [%s]", vote), ex);
         } finally {
-            // session.close();
+             session.close();
         }
     }
     
     /**
      * [Explain the description for this method here].
      * @return
-     * @see mks.ownbank.db.dao.VoteDao#list()
+     * @see mks.ownbank.db.dao.LuckyNumDao#list()
      */
     @Override
-    public List<PeriodVote> list() {
+    public List<LuckyNum> list() {
         Session session = getCurrentSession();
-        List<PeriodVote> listPeriodVote = (List<PeriodVote>) session.createCriteria(PeriodVote.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        List<LuckyNum> listUser = (List<LuckyNum>) session.createCriteria(LuckyNum.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
  
-        return listPeriodVote;
+        session.close();
+
+        return listUser;
     }
 
     @Override
-    public List<PeriodVote> findVoteByteUserId(String userId) {
+    public List<LuckyNum> findVoteByteUserId(String userId) {
         Session session = getCurrentSession();
-        String hsql = "from PeriodVote u where u.userid = :userId";
+        String hsql = "from LuckyNum u where u.userid = :userId";
         Query query = session.createQuery(hsql);
         
         query.setString("userId", userId);
+        // session.close();
         
         return query.list();
     }

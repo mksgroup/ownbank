@@ -25,7 +25,7 @@
                         <tr>
                             <th width="30%">Date</th>
                             <th width="20%">Username</th>
-                            <th width="20%">Lucky number</th>
+                            <th width="20%">Voted value</th>
                         </tr>
                     </thead>
                 </table>
@@ -40,7 +40,7 @@
             "columns" : [
                 {"data" : "voted"},
                 {"data" : "username"},
-                {"data" : "luckyNum"}
+                {"data" : "voteValue"}
              ]
         });
     });

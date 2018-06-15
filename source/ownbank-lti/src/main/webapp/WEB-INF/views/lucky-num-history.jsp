@@ -37,7 +37,7 @@
         $('#historyTable').DataTable({
         	"ajax": 'load-history-lucky-num',
             "columns" : [
-                {"data" : "voted"},
+                {"data" : "got"},
                 {"data" : "luckyNum"}
              ]
         });

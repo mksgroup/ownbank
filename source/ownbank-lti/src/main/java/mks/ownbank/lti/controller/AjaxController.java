@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 
+import mks.ownbank.db.dao.LuckyNumDao;
 import mks.ownbank.db.dao.PeriodVoteDao;
-import mks.ownbank.db.dao.VoteDao;
 import mks.ownbank.db.entiy.LogLtiLauch;
+import mks.ownbank.db.entiy.LuckyNum;
 import mks.ownbank.db.entiy.PeriodVote;
-import mks.ownbank.db.entiy.Vote;
 import mks.ownbank.lti.controller.model.VoteDataModel;
 
 
@@ -46,7 +46,7 @@ public class AjaxController {
     LtiSigner signer;
     
     @Autowired
-    VoteDao voteDao;
+    LuckyNumDao luckyNumDao;
     
     @Autowired
     PeriodVoteDao periodVoteDao;
@@ -95,8 +95,18 @@ public class AjaxController {
     }
 
     
+    /**
+     * [Give the description for method].
+     * @param luckyNum
+     * @param request
+     * @param result
+     * @param resp
+     * @param map
+     * @return
+     * @throws Throwable
+     */
     @Lti
-    @RequestMapping(value = "/draftSave", method = RequestMethod.POST)
+    @RequestMapping(value = "/save-luckynum", method = RequestMethod.POST)
     public String draftSaveAnswer(@RequestParam("luckyNum") Integer luckyNum, HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
         LOG.info("Draft saving...");
         // Get user and client information from session
@@ -105,12 +115,12 @@ public class AjaxController {
 
         LOG.info("logonUser=" + logonUser + ";luckyNum=" + luckyNum + ";logLtiLaunch=" + logLtiLaunch);
         
-        Vote vote = new Vote();
+        LuckyNum vote = new LuckyNum();
         vote.setId(null); // For save newly
         
         String customProgram = map.containsKey("custom_program") ? (String) map.get("custom_program") : "OwnBank_MKS";
         vote.setEventId(customProgram);
-        vote.setVoted(new Date());
+        vote.setGot(new Date());
         vote.setLuckyNum(luckyNum);
         vote.setUserid(logonUser);
         vote.setLtiLaunch(logLtiLaunch);
@@ -121,7 +131,7 @@ public class AjaxController {
         vote.setFullname((String) map.get("fullname"));
         vote.setFamilyname((String) map.get("familyname"));
         
-        voteDao.save(vote);
+        luckyNumDao.save(vote);
         
         Map<String, String> resultStatus = new HashMap<>();
         resultStatus.put("status", "OK");
@@ -148,20 +158,33 @@ public class AjaxController {
         String userId = (String) map.get("userid");
         
         LOG.info("loadHistoryVotes...userId=" + userId);
-        List<Vote> listVotes = voteDao.findVoteByteUserId(userId);
+        List<LuckyNum> listVotes = luckyNumDao.findVoteByteUserId(userId);
         
         VoteDataModel dataModel = new VoteDataModel(listVotes);
 
         return new Gson().toJson(dataModel);
     }
-    
+
+    @Lti
+    @RequestMapping(value = "/load-all-history-lucky-num", method = RequestMethod.GET)
+    public String loadAllHistoryLuckyNum(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
+        String userId = (String) map.get("userid");
+        
+        LOG.info("loadHistoryVotes...userId=" + userId);
+        List<LuckyNum> listVotes = luckyNumDao.list();
+        
+        VoteDataModel dataModel = new VoteDataModel(listVotes);
+
+        return new Gson().toJson(dataModel);
+    }
+
     @Lti
     @RequestMapping(value = "/load-all-history-votes", method = RequestMethod.GET)
     public String loadAllHistoryVotes(HttpServletRequest request, LtiVerificationResult result, HttpServletResponse resp, ModelMap map) throws Throwable {
         String userId = (String) map.get("userid");
         
         LOG.info("loadHistoryVotes...userId=" + userId);
-        List<Vote> listVotes = voteDao.list();
+        List<PeriodVote> listVotes = periodVoteDao.list();
         
         VoteDataModel dataModel = new VoteDataModel(listVotes);
 

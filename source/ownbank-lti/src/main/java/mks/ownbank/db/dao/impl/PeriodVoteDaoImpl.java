@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package mks.ownbank.db.dao;
+package mks.ownbank.db.dao.impl;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -30,43 +30,44 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import mks.ownbank.db.entiy.Vote;
+import mks.ownbank.db.dao.BaseDao;
+import mks.ownbank.db.dao.PeriodVoteDao;
+import mks.ownbank.db.entiy.PeriodVote;
 
 /**
  * @author ThachLN
  */
 @Repository
-public class VoteDaoImpl extends BaseDao implements VoteDao {
-    private final static Logger LOG = Logger.getLogger(VoteDaoImpl.class.getName());
+public class PeriodVoteDaoImpl extends BaseDao implements PeriodVoteDao {
+    private final static Logger LOG = Logger.getLogger(PeriodVoteDaoImpl.class.getName());
 
-    public VoteDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        
+    public PeriodVoteDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     /**
      * [Explain the description for this method here].
-     * @param vote
-     * @see mks.ownbank.db.dao.VoteDao#save(mks.ownbank.db.entiy.Vote)
+     * @param periodVote
+     * @see mks.ownbank.db.dao.LuckyNumDao#save(mks.ownbank.db.entiy.Vote)
      */
     @Override
     @Transactional
-    public void save(Vote vote) {
+    public void save(PeriodVote periodVote) {
         Session session = sessionFactory.openSession();
 
         try {
             session.beginTransaction();
             
             // Save the vote information
-            session.save(vote);
+            session.save(periodVote);
             
             // Save the client information
-            vote.getLtiLaunch().setVoteId(vote.getId());
-            session.save(vote.getLtiLaunch());
+            periodVote.getLtiLaunch().setVoteId(periodVote.getId());
+            session.save(periodVote.getLtiLaunch());
 
             session.getTransaction().commit();
         } catch (Exception ex) {
-            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", vote), ex);
+            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", periodVote), ex);
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -74,40 +75,42 @@ public class VoteDaoImpl extends BaseDao implements VoteDao {
     }
     
     @Override
-    public void saveOrUpdate(Vote vote) {
+    public void saveOrUpdate(PeriodVote periodVote) {
         Session session = getCurrentSession();
 
         try {
             // Save the vote information
-            session.save(vote);
+            session.save(periodVote);
         } catch (Exception ex) {
-            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", vote), ex);
+            LOG.log(Level.SEVERE, String.format("Could not save the vote [%s]", periodVote), ex);
         } finally {
-            // session.close();
+             session.close();
         }
     }
     
     /**
      * [Explain the description for this method here].
      * @return
-     * @see mks.ownbank.db.dao.VoteDao#list()
+     * @see mks.ownbank.db.dao.LuckyNumDao#list()
      */
     @Override
-    public List<Vote> list() {
+    public List<PeriodVote> list() {
         Session session = getCurrentSession();
-        List<Vote> listUser = (List<Vote>) session.createCriteria(Vote.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+        List<PeriodVote> listPeriodVote = (List<PeriodVote>) session.createCriteria(PeriodVote.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
  
-        return listUser;
+        session.close();
+        return listPeriodVote;
     }
 
     @Override
-    public List<Vote> findVoteByteUserId(String userId) {
+    public List<PeriodVote> findVoteByteUserId(String userId) {
         Session session = getCurrentSession();
-        String hsql = "from Vote u where u.userid = :userId";
+        String hsql = "from PeriodVote u where u.userid = :userId";
         Query query = session.createQuery(hsql);
         
         query.setString("userId", userId);
         
+        // session.close();
         return query.list();
     }
 }

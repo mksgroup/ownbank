@@ -37,5 +37,8 @@
   <property generated="never" lazy="false" name="voteId" type="java.lang.Integer">
    <column name="VOTEID"/>
   </property>
+  <property generated="never" lazy="false" name="luckyNumId" type="java.lang.Integer">
+   <column name="LUCKYNUMID"/>
+  </property>
  </class>
 </hibernate-mapping>

@@ -15,9 +15,9 @@
             <button type="submit" class="btn btn-default" name="clickedBtn" value="voteHistory">
                 <i class="fa fa-search"></i>Lịch sử
             </button>
-<!--             <button type="submit" class="btn btn-default" name="clickedBtn" value="voteReport"> -->
-<!--                 <i class="fa fa-search"></i>Báo cáo -->
-<!--             </button> -->
+            <button type="submit" class="btn btn-default" name="clickedBtn" value="voteReport">
+                <i class="fa fa-search"></i>Báo cáo
+            </button>
         </form:form>
     </div>
 </body>

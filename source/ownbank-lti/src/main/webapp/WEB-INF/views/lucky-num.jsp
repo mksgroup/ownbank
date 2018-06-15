@@ -65,6 +65,9 @@
 </div>
 
 <script>
+    /** isSaved: flag of saving lucky number.*/
+    var isSaved = false;
+
     var gameConfig = {
         canvasId: 'game',
         canvasWidth: $("#container").width(),
@@ -158,12 +161,18 @@
     });
 
     function submitSelectedNum(luckyNum) {
+
+        if (isSaved) {
+            console.log("The lucky number is saved.");
+            return;
+        }
+
         var data = {};
         data["luckyNum"] = luckyNum;
-        
+
         $.ajax({
             type: 'POST',
-            url: 'draftSave',
+            url: 'save-luckynum',
             data: data,
     
             success : function(result) {
@@ -178,6 +187,9 @@
           	  console.log("message=" + result);
             }
         });
+
+        // turn on the flag
+        isSaved = true;
     }
 </script>
 

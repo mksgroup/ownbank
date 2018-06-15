@@ -36,9 +36,9 @@
 <SCRIPT type="text/javascript">
     $(document).ready( function () {
         $('#historyTable').DataTable({
-        	"ajax": 'load-all-history-votes',
+        	"ajax": 'load-all-history-lucky-num',
             "columns" : [
-                {"data" : "voted"},
+                {"data" : "got"},
                 {"data" : "username"},
                 {"data" : "luckyNum"}
              ]
